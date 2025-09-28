@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prakash Reddy - Data Analyst Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 40px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(238, 90, 36, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(238, 90, 36, 0.4);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 60px;
+            font-weight: 700;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            padding: 0 30px;
+        }
+
+        .dashboard-card {
+            padding: 30px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(31, 38, 135, 0.5);
+        }
+
+        .dashboard-card h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            flex-grow: 1;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 0 30px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4ECDC4;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: white;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* About Section */
+        .about-content {
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            color: white;
+        }
+
+        .about-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #4ECDC4;
+        }
+
+        .about-text p {
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        /* Skills */
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .skill-tag {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            color: white;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Contact */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-1 {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+
+        .floating-2 {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 10%;
+            animation-delay: -4s;
+        }
+
+        .floating-3 {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -1s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Elements -->
+    <div class="floating-element floating-1"></div>
+    <div class="floating-element floating-2"></div>
+    <div class="floating-element floating-3"></div>
+
+    <!-- Header -->
+    <header>
+        <nav class="glass">
+            <div class="logo">Prakash Reddy</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#dashboards">Dashboards</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content glass">
+            <h1>Prakash Reddy</h1>
+            <p>Senior Data Analyst | Transforming Data into Actionable Insights</p>
+            <a href="#dashboards" class="cta-button">Explore My Work</a>
+        </div>
+    </section>
+
+    <!-- Dashboards Section -->
+    <section id="dashboards">
+        <h2 class="section-title animate-on-scroll">Interactive Dashboards</h2>
+        
+        <div class="dashboard-grid">
+            <!-- Sales Analytics Dashboard -->
+            <div class="dashboard-card glass animate-on-scroll">
+                <h3>📊 Sales Performance Analytics</h3>
+                <div class="chart-container">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Customer Insights Dashboard -->
+            <div class="dashboard-card glass animate-on-scroll">
+                <h3>👥 Customer Demographics</h3>
+                <div class="chart-container">
+                    <canvas id="customerChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Revenue Trends Dashboard -->
+            <div class="dashboard-card glass animate-on-scroll">
+                <h3>💰 Revenue Growth Trends</h3>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Market Analysis Dashboard -->
+            <div class="dashboard-card glass animate-on-scroll">
+                <h3>📈 Market Share Analysis</h3>
+                <div class="chart-container">
+                    <canvas id="marketChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-grid">
+            <div class="stat-card glass animate-on-scroll">
+                <div class="stat-number" id="projectsCount">0</div>
+                <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat-card glass animate-on-scroll">
+                <div class="stat-number" id="clientsCount">0</div>
+                <div class="stat-label">Happy Clients</div>
+            </div>
+            <div class="stat-card glass animate-on-scroll">
+                <div class="stat-number" id="experienceCount">0</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-card glass animate-on-scroll">
+                <div class="stat-number" id="accuracyCount">0</div>
+                <div class="stat-label">% Accuracy Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title animate-on-scroll">About Me</h2>
+        <div class="about-content animate-on-scroll">
+            <div class="about-image">PR</div>
+            <div class="about-text">
+                <h3>Data-Driven Professional</h3>
+                <p>With over 5 years of experience in data analysis, I specialize in transforming complex datasets into clear, actionable insights that drive business growth. My expertise spans across statistical analysis, machine learning, and advanced visualization techniques.</p>
+                
+                <p>I have successfully led data initiatives that resulted in 25% increase in operational efficiency and $2M+ in cost savings across various industries including fintech, healthcare, and e-commerce.</p>
+                
+                <div class="skills">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">R</span>
+                    <span class="skill-tag">SQL</span>
+                    <span class="skill-tag">Tableau</span>
+                    <span class="skill-tag">Power BI</span>
+                    <span class="skill-tag">Machine Learning</span>
+                    <span class="skill-tag">Statistical Analysis</span>
+                    <span class="skill-tag">Data Visualization</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title animate-on-scroll">Get In Touch</h2>
+        <div class="contact-form animate-on-scroll">
+            <div class="form-group">
+                <input type="text" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+                <textarea rows="5" placeholder="Your Message" required></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="cta-button" style="width: 100%; border: none; cursor: pointer;">Send Message</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter Animation
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + (target === 98 ? '%' : '+');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + (target === 98 ? '%' : '+');
+                }
+            }, 20);
+        }
+
+        // Initialize counters when visible
+        const counters = [
+            { id: 'projectsCount', target: 150 },
+            { id: 'clientsCount', target: 50 },
+            { id: 'experienceCount', target: 5 },
+            { id: 'accuracyCount', target: 98 }
+        ];
+
+        counters.forEach(counter => {
+            const element = document.getElementById(counter.id);
+            observer.observe(element);
+            element.addEventListener('animationstart', () => {
+                setTimeout(() => animateCounter(element, counter.target), 500);
+            });
+        });
+
+        // Chart.js Configurations
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'white'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        color: 'rgba(255,255,255,0.7)'
+                    },
+                    grid: {
+                        color: 'rgba(255,255,255,0.1)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: 'rgba(255,255,255,0.7)'
+                    },
+                    grid: {
+                        color: 'rgba(255,255,255,0.1)'
+                    }
+                }
+            }
+        };
+
+        // Sales Chart
+        new Chart(document.getElementById('salesChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Sales Revenue ($K)',
+                    data: [65, 78, 90, 81, 96, 105],
+                    borderColor: '#4ECDC4',
+                    backgroundColor: 'rgba(78, 205, 196, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Customer Chart
+        new Chart(document.getElementById('customerChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['18-25', '26-35', '36-45', '46+'],
+                datasets: [{
+                    data: [25, 35, 25, 15],
+                    backgroundColor: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Revenue Chart
+        new Chart(document.getElementById('revenueChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                datasets: [{
+                    label: 'Revenue ($M)',
+                    data: [2.5, 3.2, 2.8, 4.1],
+                    backgroundColor: 'rgba(255, 107, 107, 0.8)',
+                    borderColor: '#FF6B6B',
+                    borderWidth: 2
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Market Chart
+        new Chart(document.getElementById('marketChart'), {
+            type: 'radar',
+            data: {
+                labels: ['Product A', 'Product B', 'Product C', 'Product D', 'Product E'],
+                datasets: [{
+                    label: 'Market Share %',
+                    data: [65, 59, 90, 81, 56],
+                    borderColor: '#45B7D1',
+                    backgroundColor: 'rgba(69, 183, 209, 0.2)',
+                    pointBackgroundColor: '#45B7D1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        pointLabels: {
+                            color: 'rgba(255,255,255,0.7)'
+                        },
+                        grid: {
+                            color: 'rgba(255,255,255,0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255,255,255,0.7)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
